@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BUYMA ブランド管理</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f7f5f2;
+  --surface: #ffffff;
+  --surface2: #f0ede8;
+  --text: #1a1814;
+  --text2: #6b6660;
+  --text3: #a09a94;
+  --border: #e2ddd8;
+  --border2: #ccc8c2;
+  --accent: #2c2420;
+  --accent2: #8b6f5e;
+  --blue-bg: #eef2f8;
+  --blue-text: #2a4a7f;
+  --green-bg: #eef5ee;
+  --green-text: #2a5e2a;
+  --amber-bg: #faf3e8;
+  --amber-text: #7a4e0a;
+  --gray-bg: #f0ede8;
+  --gray-text: #6b6660;
+  --radius: 10px;
+  --radius-sm: 6px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--accent);
+  padding: 28px 40px;
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.logo-mark {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.04em;
+}
+
+.logo-sub {
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px 60px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 11px 14px 11px 40px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+input[type="text"]:focus { border-color: var(--border2); }
+input[type="text"]::placeholder { color: var(--text3); }
+
+.filters {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  padding: 7px 14px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.filter-btn:hover { border-color: var(--border2); color: var(--text); }
+.filter-btn.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+.meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.count-label {
+  font-size: 12px;
+  color: var(--text3);
+  letter-spacing: 0.05em;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+.card:hover {
+  border-color: var(--border2);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.card.no-link {
+  opacity: 0.5;
+  cursor: default;
+}
+.card.no-link:hover {
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.card-name {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--text);
+}
+
+.badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  letter-spacing: 0.03em;
+}
+.badge-edit { background: var(--blue-bg); color: var(--blue-text); }
+.badge-copy { background: var(--green-bg); color: var(--green-text); }
+.badge-item { background: var(--amber-bg); color: var(--amber-text); }
+.badge-none { background: var(--gray-bg); color: var(--gray-text); }
+
+.card-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.card-date {
+  font-size: 11px;
+  color: var(--text3);
+}
+
+.card-note {
+  font-size: 11px;
+  color: var(--accent2);
+  line-height: 1.4;
+}
+
+.memo-section {
+  margin-top: 10px;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+.memo-input {
+  width: 100%;
+  padding: 7px 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  background: var(--surface2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  resize: none;
+  outline: none;
+  min-height: 52px;
+  transition: border-color 0.15s, background 0.15s;
+  line-height: 1.5;
+}
+.memo-input:focus {
+  background: var(--surface);
+  border-color: var(--border2);
+}
+.memo-input::placeholder { color: var(--text3); }
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text3);
+  font-size: 14px;
+}
+
+.memo-saved-indicator {
+  font-size: 10px;
+  color: var(--green-text);
+  text-align: right;
+  height: 14px;
+  transition: opacity 0.3s;
+  opacity: 0;
+}
+.memo-saved-indicator.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">BUYMA</div>
+  <div class="logo-sub">Brand Manager</div>
+</header>
+
+<div class="main">
+  <div class="toolbar">
+    <div class="search-wrap">
+      <svg class="search-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="search" placeholder="ブランド名で検索...">
+    </div>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">すべて</button>
+      <button class="filter-btn" data-filter="edit">編集</button>
+      <button class="filter-btn" data-filter="copy">コピー</button>
+      <button class="filter-btn" data-filter="item">商品</button>
+      <button class="filter-btn" data-filter="none">リンクなし</button>
+    </div>
+  </div>
+
+  <div class="meta-bar">
+    <span class="count-label" id="count"></span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+const brands = [
+  { name: "Sophie Buhai", url: "https://www.buyma.com/my/sell/101868450/edit", date: "12/22" },
+  { name: "KHAITE", url: "https://www.buyma.com/my/sell/101869247/edit", date: "12/22" },
+  { name: "SANDRO", url: "https://www.buyma.com/my/sell/114753163/edit?tab=b", date: "1/19" },
+  { name: "Laura Lombardi", url: "https://www.buyma.com/my/sell/101381598/edit?tab=b", date: "12/22" },
+  { name: "JUDITH LEIBER", url: "https://www.buyma.com/my/sell/101324733/edit?tab=b", date: "12/22" },
+  { name: "Anya Hindmarch", url: "https://www.buyma.com/my/sell/101375822/edit?tab=b", date: "12/22" },
+  { name: "STAUD", url: "https://www.buyma.com/my/sell/101324744/edit?tab=b", date: "12/22" },
+  { name: "JW ANDERSON", url: "https://www.buyma.com/my/sell/101324689/edit?tab=b", date: "2/26" },
+  { name: "MARINE SERRE", url: "https://www.buyma.com/item/101324678", date: "12/22" },
+  { name: "Marant Etoile", url: "https://www.buyma.com/my/sell/101324663/edit?tab=b", date: "12/22" },
+  { name: "Isabel Marant", url: "https://www.buyma.com/my/sell/101900796/edit?tab=b", date: "2/18" },
+  { name: "ASKYURSELF", url: "https://www.buyma.com/my/sell/117426333/edit", date: "4/8" },
+  { name: "Issey Miyake", url: "https://www.buyma.com/my/sell/101871025/edit?tab=b", date: "2/11" },
+  { name: "MACKINTOSH", url: "https://www.buyma.com/my/sell/101871690/edit?tab=b", date: "12/22" },
+  { name: "Commas", url: "https://www.buyma.com/my/sell/101872251/edit?tab=b", date: "12/22" },
+  { name: "LEMAIRE", url: "https://www.buyma.com/my/sell/101876038/edit?tab=b", date: "1/7" },
+  { name: "COMME DES GARCONS", url: "https://www.buyma.com/my/sell/104781664/edit?tab=b", date: "12/22" },
+  { name: "ALTUZARRA", url: "https://www.buyma.com/my/sell/104781694/edit?tab=b", date: "2/4" },
+  { name: "Maje", url: "https://www.buyma.com/my/sell/104781761/edit?tab=b", date: "5/9" },
+  { name: "MISSOMA", url: "https://www.buyma.com/my/sell/104996337/edit?tab=b", date: "12/22" },
+  { name: "MAX MARA", url: "https://www.buyma.com/my/sell/101899598/edit?tab=b", date: "12/22" },
+  { name: "FURLA", url: "https://www.buyma.com/my/sell/101899711/edit?tab=b", date: "3/20" },
+  { name: "Aje.", url: "https://www.buyma.com/my/sell/112670865/edit?tab=b", date: "11/15" },
+  { name: "A.P.C.", url: "https://www.buyma.com/my/sell/101900635/edit?tab=b", date: "3/20" },
+  { name: "Pleats Please Issey Miyake", url: "https://www.buyma.com/my/sell/101903478/edit", date: "12/22" },
+  { name: "ZANEROBE", url: "https://www.buyma.com/my/sell/101917964/edit", date: "12/22", note: "RonHerman取扱い" },
+  { name: "Casablanca", url: "https://www.buyma.com/my/sell/112671402/edit?tab=b", date: "11/15" },
+  { name: "TOD'S", url: "https://www.buyma.com/my/sell/104738502/edit?tab=b", date: "2/12" },
+  { name: "SELF PORTRAIT", url: "https://www.buyma.com/my/sell/new?copy_id=101927710&tab=b", date: "12/22" },
+  { name: "LELE SADOUGHI", url: "https://www.buyma.com/my/sell/new?copy_id=99069233", date: "12/22" },
+  { name: "JACQUEMUS", url: "https://www.buyma.com/my/sell/104844458/edit?tab=b", date: "3/4" },
+  { name: "RAEY", url: "https://www.buyma.com/my/sell/101956907/edit", date: "12/22" },
+  { name: "toteme", url: "https://www.buyma.com/my/sell/113732421/edit?tab=b", date: "12/16" },
+  { name: "GANNI", url: "https://www.buyma.com/my/sell/104896806/edit?tab=b", date: "3/18" },
+  { name: "PROENZA SCHOULER", url: "https://www.buyma.com/my/sell/101959848/edit", date: "12/22" },
+  { name: "AURALEE", url: "https://www.buyma.com/my/sell/101978552/edit", date: "12/22" },
+  { name: "Umbro", url: "https://www.buyma.com/my/sell/101985753/edit", date: "12/22" },
+  { name: "The Attico", url: "https://www.buyma.com/my/sell/new?copy_id=101990996", date: "12/22" },
+  { name: "Kuling", url: "https://www.buyma.com/my/sell/new?copy_id=101493713", date: "12/24" },
+  { name: "Stella McCartney", url: "https://www.buyma.com/my/sell/new?copy_id=102095052", date: "12/27" },
+  { name: "MZ Wallace", url: "https://www.buyma.com/my/sell/109815735/edit?tab=b", date: "8/22" },
+  { name: "On", url: "https://www.buyma.com/my/sell/new?copy_id=101416558", date: "12/30" },
+  { name: "robert indiana", url: "", date: "" },
+  { name: "Liu Jo", url: "https://www.buyma.com/my/sell/102320523/edit?tab=b", date: "1/5" },
+  { name: "CULT GAIA", url: "https://www.buyma.com/my/sell/102349462/edit", date: "1/6" },
+  { name: "Timeless Pearly", url: "https://www.buyma.com/my/sell/new?copy_id=102349972", date: "1/6" },
+  { name: "RAF SIMONS", url: "https://www.buyma.com/my/sell/new?copy_id=102376461", date: "1/7" },
+  { name: "ALEXANDER MCQUEEN", url: "https://www.buyma.com/my/sell/new?copy_id=102397757&tab=b", date: "1/24" },
+  { name: "MARNI", url: "https://www.buyma.com/my/sell/new?copy_id=102398125", date: "1/8" },
+  { name: "STUDIO NICHOLSON", url: "https://www.buyma.com/my/sell/109361885/edit?tab=b", date: "8/22" },
+  { name: "The Row", url: "https://www.buyma.com/my/sell/new?copy_id=101324095", date: "1/12" },
+  { name: "TWIN-SET", url: "https://www.buyma.com/my/sell/new?copy_id=100493932", date: "1/12" },
+  { name: "Balmain", url: "https://www.buyma.com/my/sell/new?copy_id=95981750", date: "1/12" },
+  { name: "Dunhill", url: "https://www.buyma.com/my/sell/104988894/edit?tab=b", date: "1/14" },
+  { name: "Ruslan Baginskiy", url: "https://www.buyma.com/my/sell/107309721/edit?tab=b", date: "1/15", note: "Vogue紹介ブランド" },
+  { name: "Completedworks", url: "https://www.buyma.com/my/sell/new?copy_id=100527938", date: "1/17" },
+  { name: "HEREU", url: "https://www.buyma.com/my/sell/new?copy_id=100344538", date: "1/17" },
+  { name: "Eliou", url: "https://www.buyma.com/my/sell/new?copy_id=99267276", date: "1/17" },
+  { name: "Jimmy Choo", url: "https://www.buyma.com/my/sell/new?copy_id=102807024", date: "1/19" },
+  { name: "MANSUR GAVRIEL", url: "https://www.buyma.com/my/sell/new?copy_id=102882517", date: "1/20" },
+  { name: "ROKSANDA", url: "https://www.buyma.com/my/sell/new?copy_id=100384793", date: "2/29" },
+  { name: "Saint Laurent", url: "https://www.buyma.com/my/sell/new?copy_id=102959245", date: "1/23" },
+  { name: "The Attico (2)", url: "https://www.buyma.com/my/sell/new?copy_id=102970495", date: "1/23" },
+  { name: "DAPHINE", url: "https://www.buyma.com/my/sell/103079757/edit", date: "1/26" },
+  { name: "SIMONE ROCHA", url: "https://www.buyma.com/my/sell/103502798/edit", date: "2/28" },
+  { name: "DEMELLIER", url: "https://www.buyma.com/my/sell/104925681/edit?tab=b", date: "3/19" },
+  { name: "CECILIE BAHNSEN", url: "https://www.buyma.com/my/sell/103390509/edit", date: "2/4" },
+  { name: "EMILIA WICKSTEAD", url: "https://www.buyma.com/my/sell/new?copy_id=100408187", date: "2/28" },
+  { name: "Sophie Bille Brahe", url: "https://www.buyma.com/my/sell/103583524/edit", date: "2/9" },
+  { name: "MARC JACOBS", url: "https://www.buyma.com/my/sell/new?copy_id=103655044", date: "2/12" },
+  { name: "FENDI", url: "https://www.buyma.com/my/sell/new?copy_id=103668546", date: "2/12" },
+  { name: "CELINE", url: "https://www.buyma.com/my/sell/new?copy_id=103673129", date: "2/12" },
+  { name: "BOTTEGA VENETA", url: "https://www.buyma.com/my/sell/new?copy_id=103692162", date: "2/12" },
+  { name: "Anissa Kermiche", url: "https://www.buyma.com/my/sell/new?copy_id=103739903", date: "2/14" },
+  { name: "A.W.A.K.E. MODE", url: "https://www.buyma.com/my/sell/new?copy_id=103872738&tab=b", date: "2/18" },
+  { name: "Vita Kin", url: "https://www.buyma.com/my/sell/new?copy_id=103986180&tab=b", date: "2/26" },
+  { name: "Sea NEW YORK", url: "https://www.buyma.com/my/sell/104145637/edit?tab=b", date: "2/25" },
+  { name: "COCCINELLE", url: "https://www.buyma.com/my/sell/104732885/edit?tab=b", date: "2/26" },
+  { name: "JilSander", url: "https://www.buyma.com/my/sell/104731358/edit?tab=b", date: "3/6" },
+  { name: "ALLSAINTS", url: "https://www.buyma.com/my/sell/109815768/edit?tab=b", date: "8/22" },
+  { name: "Olympia Le Tan", url: "https://www.buyma.com/my/sell/104267906/edit?tab=b", date: "2/28" },
+  { name: "GIANNI CHIARINI", url: "https://www.buyma.com/my/sell/104465683/edit?tab=b", date: "3/5" },
+  { name: "Longchamp", url: "https://www.buyma.com/my/sell/104465692/edit?tab=b", date: "3/5" },
+  { name: "POLO RALPH LAUREN", url: "https://www.buyma.com/my/sell/104508443/edit?tab=b", date: "3/6" },
+  { name: "ETRO", url: "https://www.buyma.com/my/sell/104730599/edit?tab=b", date: "3/13" },
+  { name: "HUMAN MADE", url: "https://www.buyma.com/my/sell/104730702/edit?tab=b", date: "8/22" },
+  { name: "J.KIM", url: "https://www.buyma.com/my/sell/104964777/edit?tab=b", date: "3/20" },
+  { name: "BODE", url: "https://www.buyma.com/my/sell/104963349/edit?tab=b", date: "3/20" },
+  { name: "COCCINELLE (copy)", url: "https://www.buyma.com/my/sell/new?copy_id=104550931", date: "3/19" },
+  { name: "AIGNER", url: "https://www.buyma.com/my/sell/105030072/edit?tab=b", date: "3/22" },
+  { name: "AQUAZZURA", url: "https://www.buyma.com/my/sell/106536270/edit?tab=b", date: "5/11" },
+  { name: "SAINT Mxxxxxx", url: "https://www.buyma.com/my/sell/107086096/edit?tab=b", date: "5/28" },
+  { name: "HOBBS LONDON", url: "https://www.buyma.com/my/sell/107199456/edit?tab=b", date: "5/31" },
+  { name: "SIYU", url: "https://www.buyma.com/my/sell/107301467/edit?tab=b", date: "6/4", note: "BUYMA内でブランド登録無し" },
+  { name: "Homme Plissé Issey Miyake", url: "", date: "" },
+  { name: "AMIRI", url: "https://www.buyma.com/my/sell/108025334/edit?tab=b", date: "6/25" },
+  { name: "PATOU", url: "https://www.buyma.com/my/sell/108047233/edit?tab=b", date: "6/25" },
+  { name: "ESSENTIALS", url: "https://www.buyma.com/my/sell/110139021/edit?tab=b", date: "10/7" },
+  { name: "WACKO MARIA", url: "https://www.buyma.com/my/sell/127071955/edit?tab=b", date: "1/23" },
+  { name: "NEIGHBORHOOD", url: "https://www.buyma.com/my/sell/110946763/edit?tab=b", date: "10/7" },
+  { name: "Sacai", url: "https://www.buyma.com/my/sell/111196413/edit?tab=b", date: "10/7" },
+  { name: "A.P.C. (2)", url: "https://www.buyma.com/my/sell/111208850/edit?tab=b", date: "10/7" },
+  { name: "BoTT", url: "https://www.buyma.com/my/sell/111209736/edit?tab=b", date: "10/7" },
+  { name: "Carhartt WIP", url: "", date: "" },
+  { name: "Yohji Yamamoto", url: "https://www.buyma.com/my/sell/111209046/edit?tab=b", date: "10/7" },
+  { name: "BlackEyePatch", url: "https://www.buyma.com/my/sell/113022689/edit?tab=b", date: "11/25" },
+  { name: "AURALEE (2)", url: "https://www.buyma.com/my/sell/114069201/edit?tab=b", date: "12/27" },
+  { name: "OUR LEGACY", url: "https://www.buyma.com/my/sell/109400277/edit?tab=b", date: "8/22" },
+  { name: "THOM BROWNE", url: "https://www.buyma.com/my/sell/109805790/edit?tab=b", date: "8/22" },
+  { name: "Paul Smith", url: "https://www.buyma.com/my/sell/109777273/edit?tab=b", date: "8/22" },
+  { name: "SAVE MY BAG", url: "https://www.buyma.com/my/sell/109877513/edit?tab=b", date: "8/22" },
+  { name: "NEEDLES", url: "https://www.buyma.com/my/sell/109877621/edit?tab=b", date: "8/22" },
+  { name: "ADERERROR", url: "https://www.buyma.com/my/sell/109877747/edit?tab=b", date: "8/22" },
+  { name: "Zimmermann", url: "https://www.buyma.com/my/sell/new?copy_id=109831489", date: "8/22" },
+  { name: "VETEMENTS", url: "https://www.buyma.com/my/sell/112857778/edit?tab=b", date: "11/21" },
+  { name: "Aesther Ekme", url: "https://www.buyma.com/my/sell/113326347/edit?tab=b", date: "12/4" },
+  { name: "UNDERCOVER", url: "https://www.buyma.com/my/sell/130164981/edit?tab=b", date: "" },
+];
+
+const MEMO_KEY = "buyma_memos";
+
+function loadMemos() {
+  try { return JSON.parse(localStorage.getItem(MEMO_KEY) || "{}"); } catch { return {}; }
+}
+function saveMemo(name, val) {
+  const m = loadMemos();
+  m[name] = val;
+  localStorage.setItem(MEMO_KEY, JSON.stringify(m));
+}
+
+function getType(url) {
+  if (!url) return "none";
+  if (url.includes("/item/")) return "item";
+  if (url.includes("copy_id")) return "copy";
+  return "edit";
+}
+
+function getBadge(type) {
+  return { edit: { label: "編集", cls: "badge-edit" }, copy: { label: "コピー", cls: "badge-copy" }, item: { label: "商品", cls: "badge-item" }, none: { label: "リンクなし", cls: "badge-none" } }[type];
+}
+
+let currentFilter = "all";
+
+function render() {
+  const q = document.getElementById("search").value.toLowerCase();
+  const memos = loadMemos();
+  const filtered = brands.filter(b => {
+    const matchQ = b.name.toLowerCase().includes(q);
+    const type = getType(b.url);
+    const matchF = currentFilter === "all" || type === currentFilter;
+    return matchQ && matchF;
+  });
+
+  document.getElementById("count").textContent = filtered.length + " ブランド";
+
+  const grid = document.getElementById("grid");
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">該当するブランドが見つかりませんでした</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(b => {
+    const type = getType(b.url);
+    const badge = getBadge(type);
+    const memo = (memos[b.name] || "").replace(/"/g, "&quot;");
+    const inner = `
+      <div class="card-top">
+        <span class="card-name">${b.name}</span>
+        <span class="badge ${badge.cls}">${badge.label}</span>
+      </div>
+      ${b.note ? `<div class="card-note">${b.note}</div>` : ""}
+      <div class="card-bottom">
+        <span class="card-date">${b.date || "—"}</span>
+      </div>
+      <div class="memo-section" onclick="event.stopPropagation(); event.preventDefault();">
+        <textarea class="memo-input" placeholder="メモ..." data-brand="${b.name.replace(/"/g, "&quot;")}" rows="2">${memo}</textarea>
+        <div class="memo-saved-indicator" id="saved-${CSS.escape(b.name)}">保存しました</div>
+      </div>
+    `;
+    if (b.url) {
+      return `<a class="card" href="${b.url}" target="_blank">${inner}</a>`;
+    } else {
+      return `<div class="card no-link">${inner}</div>`;
+    }
+  }).join("");
+
+  grid.querySelectorAll(".memo-input").forEach(el => {
+    el.addEventListener("input", () => {
+      const name = el.dataset.brand;
+      saveMemo(name, el.value);
+      const ind = document.getElementById("saved-" + CSS.escape(name));
+      if (ind) {
+        ind.classList.add("show");
+        clearTimeout(ind._t);
+        ind._t = setTimeout(() => ind.classList.remove("show"), 1500);
+      }
+    });
+    el.addEventListener("click", e => e.preventDefault());
+    el.addEventListener("mousedown", e => e.stopPropagation());
+  });
+}
+
+document.getElementById("search").addEventListener("input", render);
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentFilter = btn.dataset.filter;
+    render();
+  });
+});
+
+render();
+</script>
+</body>
+</html>
