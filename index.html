@@ -4,54 +4,54 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BUYMA ブランド管理</title>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#f6f6f4; --surface:#fff; --ink:#1d1d1b; --sub:#77746f; --faint:#aaa7a1;
-  --line:#e6e4e0; --line2:#cfccc6; --accent:#2f4a5c;
-  --ok:#3d7a54;
+  --bg:#d9e4ef; --surface:rgba(255,255,255,.62); --ink:#0e1620; --sub:#56677a; --faint:#8a9bad;
+  --line:rgba(14,22,32,.16); --line2:rgba(14,22,32,.42); --olive:#5d6a2a; --khaki:#5f6b3a;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%}
-body{font-family:'Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh}
-.wrap{max-width:960px;margin:0 auto;padding:56px 24px 96px}
-h1{font-size:26px;font-weight:300;letter-spacing:.14em}
-.lead{font-size:12px;color:var(--sub);margin-top:6px;letter-spacing:.06em}
-.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:24px 0 16px;display:flex;align-items:center;gap:16px}
-.bar input{flex:1;min-width:0;font:inherit;font-size:15px;padding:12px 4px;background:transparent;border:0;border-bottom:1px solid var(--line2);color:var(--ink);outline:none;border-radius:0}
+body{font-family:'Inter','Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;min-height:100vh;text-align:center}
+.wrap{max-width:760px;margin:0 auto;padding:96px 24px 140px}
+.eyebrow{font-size:11px;font-weight:400;letter-spacing:.42em;text-transform:uppercase;color:var(--sub)}
+h1{font-size:clamp(56px,13vw,112px);font-weight:200;letter-spacing:-.02em;line-height:1;margin:18px 0 20px}
+.lead{font-size:12px;font-weight:300;color:var(--sub);letter-spacing:.14em}
+.dot{display:block;width:10px;height:10px;border-radius:50%;background:var(--olive);margin:36px auto 0}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:28px 0 18px}
+.bar input{width:100%;max-width:420px;font:inherit;font-size:15px;font-weight:300;text-align:center;letter-spacing:.06em;padding:12px 4px;background:transparent;border:0;border-bottom:1px solid var(--line2);color:var(--ink);outline:none;border-radius:0}
 .bar input:focus{border-bottom-color:var(--ink)}
 .bar input::placeholder{color:var(--faint)}
-#count{font-size:12px;color:var(--sub);white-space:nowrap}
-.row{display:grid;grid-template-columns:240px 1fr;gap:28px;padding:28px 0;border-top:1px solid var(--line)}
-.info{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
-.name{font-size:17px;font-weight:500;line-height:1.4;word-break:break-word}
-.meta{font-size:12px;color:var(--sub)}
-.note{font-size:12px;color:var(--accent)}
-.open{margin-top:6px;font-size:12px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:1px}
-.open:hover{color:var(--accent);border-color:var(--accent)}
-.open:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-.off{font-size:12px;color:var(--faint)}
-.memo{position:relative}
-textarea{display:block;width:100%;min-height:132px;font:inherit;font-size:14px;line-height:1.8;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:8px;color:var(--ink);resize:vertical;outline:none;transition:border-color .15s}
-textarea:focus{border-color:var(--line2)}
+#count{display:block;margin-top:10px;font-size:11px;letter-spacing:.3em;color:var(--sub)}
+.row{display:flex;flex-direction:column;align-items:center;gap:10px;padding:64px 0 56px;border-top:1px solid var(--line)}
+.name{font-size:24px;font-weight:300;letter-spacing:.04em;line-height:1.35;word-break:break-word}
+.meta{font-size:11px;letter-spacing:.3em;color:var(--sub)}
+.note{font-size:12px;color:var(--olive);letter-spacing:.06em}
+.memo{position:relative;width:100%;margin-top:14px}
+textarea{display:block;width:100%;min-height:150px;font:inherit;font-size:14px;font-weight:300;line-height:1.9;text-align:left;padding:20px 22px;background:var(--surface);border:1px solid var(--line);border-radius:2px;color:var(--khaki);resize:vertical;outline:none;transition:border-color .15s,background .15s}
+textarea:focus{border-color:var(--line2);background:rgba(255,255,255,.85)}
 textarea::placeholder{color:var(--faint)}
-.saved{position:absolute;right:12px;bottom:10px;font-size:11px;color:var(--ok);opacity:0;transition:opacity .25s;pointer-events:none}
+.saved{position:absolute;right:14px;bottom:10px;font-size:11px;letter-spacing:.1em;color:var(--olive);opacity:0;transition:opacity .25s;pointer-events:none}
 .saved.show{opacity:1}
-.empty{padding:72px 0;text-align:center;color:var(--faint);font-size:14px;border-top:1px solid var(--line)}
+.open{margin-top:12px;font-size:12px;letter-spacing:.14em;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--olive);padding-bottom:3px}
+.open:hover{color:var(--olive)}
+.open:focus-visible,textarea:focus-visible{outline:2px solid var(--olive);outline-offset:3px}
+.off{margin-top:12px;font-size:12px;letter-spacing:.14em;color:var(--faint)}
+.empty{padding:80px 0;color:var(--sub);font-size:13px;letter-spacing:.1em;border-top:1px solid var(--line)}
 @media(max-width:700px){
-  .wrap{padding:36px 16px 72px}
-  .row{grid-template-columns:1fr;gap:14px;padding:22px 0}
-  .info{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
-  .name{width:100%}
-  .open{margin-top:0}
+  .wrap{padding:64px 18px 100px}
+  .row{padding:48px 0 44px}
+  .name{font-size:21px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
+  <div class="eyebrow">Brand Manager</div>
   <h1>BUYMA</h1>
-  <p class="lead">ブランド管理(コピー元URL)</p>
+  <p class="lead">コピー元URL</p>
+  <span class="dot"></span>
 
   <div class="bar">
     <input type="text" id="search" placeholder="ブランド名で検索" autocomplete="off">
@@ -196,7 +196,7 @@ const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>
 /* 愛用者・雑誌タグは、メモが空のときだけ最初からメモ欄に入れる */
 const seedMemo = b => b.memo || "";
 
-function grow(el){ el.style.height = "auto"; el.style.height = Math.max(132, el.scrollHeight + 2) + "px"; }
+function grow(el){ el.style.height = "auto"; el.style.height = Math.max(150, el.scrollHeight + 2) + "px"; }
 
 function render(){
   const q = document.getElementById("search").value.trim().toLowerCase();
@@ -208,18 +208,16 @@ function render(){
 
   list.innerHTML = rows.map(({ b, i }) => `
     <section class="row">
-      <div class="info">
-        <div class="name">${esc(b.name)}</div>
-        ${b.date ? `<div class="meta">${esc(b.date)}</div>` : ""}
-        ${b.note ? `<div class="note">${esc(b.note)}</div>` : ""}
-        ${b.url
-          ? `<a class="open" href="${esc(b.url)}" target="_blank" rel="noopener">コピー元ページはココをCLICK</a>`
-          : `<span class="off">リンクなし</span>`}
-      </div>
+      <div class="name">${esc(b.name)}</div>
+      ${b.date ? `<div class="meta">${esc(b.date)}</div>` : ""}
+      ${b.note ? `<div class="note">${esc(b.note)}</div>` : ""}
       <div class="memo">
         <textarea data-i="${i}" placeholder="メモを入力" aria-label="${esc(b.name)} のメモ">${esc(memos[b.name] || seedMemo(b))}</textarea>
         <span class="saved" id="saved-${i}">保存しました</span>
       </div>
+      ${b.url
+        ? `<a class="open" href="${esc(b.url)}" target="_blank" rel="noopener">コピー元ページはココをCLICK</a>`
+        : `<span class="off">リンクなし</span>`}
     </section>`).join("");
 
   list.querySelectorAll("textarea").forEach(el => {
