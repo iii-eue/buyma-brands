@@ -4,278 +4,69 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BUYMA ブランド管理</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg: #f7f5f2;
-  --surface: #ffffff;
-  --surface2: #f0ede8;
-  --text: #1a1814;
-  --text2: #6b6660;
-  --text3: #a09a94;
-  --border: #e2ddd8;
-  --border2: #ccc8c2;
-  --accent: #2c2420;
-  --accent2: #8b6f5e;
-  --blue-bg: #eef2f8;
-  --blue-text: #2a4a7f;
-  --green-bg: #eef5ee;
-  --green-text: #2a5e2a;
-  --amber-bg: #faf3e8;
-  --amber-text: #7a4e0a;
-  --gray-bg: #f0ede8;
-  --gray-text: #6b6660;
-  --radius: 10px;
-  --radius-sm: 6px;
+:root{
+  --bg:#f6f6f4; --surface:#fff; --ink:#1d1d1b; --sub:#77746f; --faint:#aaa7a1;
+  --line:#e6e4e0; --line2:#cfccc6; --accent:#2f4a5c;
+  --ok:#3d7a54;
 }
-
-* { box-sizing: border-box; margin: 0; padding: 0; }
-
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'Zen Kaku Gothic New','Hiragino Sans','Yu Gothic',sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;min-height:100vh}
+.wrap{max-width:960px;margin:0 auto;padding:56px 24px 96px}
+h1{font-size:26px;font-weight:300;letter-spacing:.14em}
+.lead{font-size:12px;color:var(--sub);margin-top:6px;letter-spacing:.06em}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:24px 0 16px;display:flex;align-items:center;gap:16px}
+.bar input{flex:1;min-width:0;font:inherit;font-size:15px;padding:12px 4px;background:transparent;border:0;border-bottom:1px solid var(--line2);color:var(--ink);outline:none;border-radius:0}
+.bar input:focus{border-bottom-color:var(--ink)}
+.bar input::placeholder{color:var(--faint)}
+#count{font-size:12px;color:var(--sub);white-space:nowrap}
+.row{display:grid;grid-template-columns:240px 1fr;gap:28px;padding:28px 0;border-top:1px solid var(--line)}
+.info{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.name{font-size:17px;font-weight:500;line-height:1.4;word-break:break-word}
+.meta{font-size:12px;color:var(--sub)}
+.note{font-size:12px;color:var(--accent)}
+.open{margin-top:6px;font-size:12px;color:var(--ink);text-decoration:none;border-bottom:1px solid var(--ink);padding-bottom:1px}
+.open:hover{color:var(--accent);border-color:var(--accent)}
+.open:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.off{font-size:12px;color:var(--faint)}
+.memo{position:relative}
+textarea{display:block;width:100%;min-height:132px;font:inherit;font-size:14px;line-height:1.8;padding:16px 18px;background:var(--surface);border:1px solid var(--line);border-radius:8px;color:var(--ink);resize:vertical;outline:none;transition:border-color .15s}
+textarea:focus{border-color:var(--line2)}
+textarea::placeholder{color:var(--faint)}
+.saved{position:absolute;right:12px;bottom:10px;font-size:11px;color:var(--ok);opacity:0;transition:opacity .25s;pointer-events:none}
+.saved.show{opacity:1}
+.empty{padding:72px 0;text-align:center;color:var(--faint);font-size:14px;border-top:1px solid var(--line)}
+@media(max-width:700px){
+  .wrap{padding:36px 16px 72px}
+  .row{grid-template-columns:1fr;gap:14px;padding:22px 0}
+  .info{flex-direction:row;flex-wrap:wrap;align-items:baseline;gap:6px 14px}
+  .name{width:100%}
+  .open{margin-top:0}
 }
-
-header {
-  background: var(--accent);
-  padding: 28px 40px;
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-}
-
-.logo-mark {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 28px;
-  font-weight: 600;
-  color: #fff;
-  letter-spacing: 0.04em;
-}
-
-.logo-sub {
-  font-size: 12px;
-  font-weight: 300;
-  color: rgba(255,255,255,0.5);
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
-
-.main {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 24px 60px;
-}
-
-.toolbar {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 24px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.search-wrap {
-  position: relative;
-  flex: 1;
-  min-width: 200px;
-}
-
-.search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 16px;
-  height: 16px;
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-input[type="text"] {
-  width: 100%;
-  padding: 11px 14px 11px 40px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text);
-  outline: none;
-  transition: border-color 0.15s;
-}
-input[type="text"]:focus { border-color: var(--border2); }
-input[type="text"]::placeholder { color: var(--text3); }
-
-.meta-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 16px;
-}
-
-.count-label {
-  font-size: 12px;
-  color: var(--text3);
-  letter-spacing: 0.05em;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 12px;
-}
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  transition: border-color 0.15s, box-shadow 0.15s;
-  text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-}
-.card:hover {
-  border-color: var(--border2);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-}
-.card.no-link {
-  opacity: 0.5;
-  cursor: default;
-}
-.card.no-link:hover {
-  border-color: var(--border);
-  box-shadow: none;
-}
-
-.card-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 8px;
-}
-
-.card-name {
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 1.4;
-  color: var(--text);
-}
-
-.badge {
-  font-size: 10px;
-  font-weight: 500;
-  padding: 3px 8px;
-  border-radius: 20px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  letter-spacing: 0.03em;
-}
-.badge-edit { background: var(--blue-bg); color: var(--blue-text); }
-.badge-copy { background: var(--green-bg); color: var(--green-text); }
-.badge-item { background: var(--amber-bg); color: var(--amber-text); }
-.badge-none { background: var(--gray-bg); color: var(--gray-text); }
-
-.card-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 8px;
-}
-
-.card-date {
-  font-size: 11px;
-  color: var(--text3);
-}
-
-.card-note {
-  font-size: 11px;
-  color: var(--accent2);
-  line-height: 1.4;
-}
-
-.memo-section {
-  margin-top: 10px;
-  border-top: 1px solid var(--border);
-  padding-top: 10px;
-}
-
-.memo-input {
-  width: 100%;
-  padding: 7px 10px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  background: var(--surface2);
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  color: var(--text);
-  resize: none;
-  outline: none;
-  min-height: 52px;
-  transition: border-color 0.15s, background 0.15s;
-  line-height: 1.5;
-}
-.memo-input:focus {
-  background: var(--surface);
-  border-color: var(--border2);
-}
-.memo-input::placeholder { color: var(--text3); }
-
-.no-results {
-  grid-column: 1 / -1;
-  text-align: center;
-  padding: 60px 20px;
-  color: var(--text3);
-  font-size: 14px;
-}
-
-.memo-saved-indicator {
-  font-size: 10px;
-  color: var(--green-text);
-  text-align: right;
-  height: 14px;
-  transition: opacity 0.3s;
-  opacity: 0;
-}
-.memo-saved-indicator.show { opacity: 1; }
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+<div class="wrap">
+  <h1>BUYMA</h1>
+  <p class="lead">ブランド管理(コピー元URL)</p>
 
-<header>
-  <div class="logo-mark">BUYMA</div>
-  <div class="logo-sub">Brand Manager（コピー元URL）</div>
-</header>
-
-<div class="main">
-  <div class="toolbar">
-    <div class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
-        <path d="M10.5 10.5L14 14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-      </svg>
-      <input type="text" id="search" placeholder="ブランド名検索して下さい...">
-    </div>
+  <div class="bar">
+    <input type="text" id="search" placeholder="ブランド名で検索" autocomplete="off">
+    <span id="count"></span>
   </div>
 
-  <div class="meta-bar">
-    <span class="count-label" id="count"></span>
-  </div>
-
-  <div class="grid" id="grid"></div>
+  <div id="list"></div>
 </div>
 
 <script>
 const brands = [
-  { name: "AFB", url: "https://www.buyma.com/my/sell/137328972/edit?tab=b", 雑誌タグ: "Ollie" },
+  { name: "AFB", url: "https://www.buyma.com/my/sell/137328972/edit?tab=b", memo: "雑誌タグ：Ollie / OCEANS / POPEYE / MENS NON-NO / smart / FINE BOYS / IN Red" },
   { name: "WTAPS", url: "https://www.buyma.com/my/sell/135205662/edit?tab=b", date: "7/24" },
-  { name: "Hender Scheme", url: "https://www.buyma.com/my/sell/137119566/edit?tab=b", 雑誌タグ: "POPEYE、GINZA" }, 
-  { name: "C.P. Company", url: "https://www.buyma.com/my/sell/137120742/edit?tab=b", date: "8/9" }, 
+  { name: "Hender Scheme", url: "https://www.buyma.com/my/sell/137119566/edit?tab=b", memo: "雑誌タグ：POPEYE / MEN'S NON-NO / VOGUE / GINZA / SPUR / GQ / Begin / smart / FINEBOYS" }, 
+  { name: "C.P. Company", url: "https://www.buyma.com/my/sell/137120742/edit?tab=b", date: "8/9", memo: "雑誌タグ：Safari / GQ / LEON / UOMO / MENS NON-NO / Begin / POPEYE / Ollie / smart / SPUR / GINZA" }, 
   { name: "KHAITE", url: "https://www.buyma.com/my/sell/101869247/edit", date: "12/22" },
   { name: "SANDRO", url: "https://www.buyma.com/my/sell/114753163/edit?tab=b", date: "1/19" },
   { name: "Laura Lombardi", url: "https://www.buyma.com/my/sell/101381598/edit?tab=b", date: "12/22" },
@@ -372,106 +163,80 @@ const brands = [
   { name: "AMIRI", url: "https://www.buyma.com/my/sell/108025334/edit?tab=b", date: "6/25" },
   { name: "PATOU", url: "https://www.buyma.com/my/sell/108047233/edit?tab=b", date: "6/25" },
   { name: "ESSENTIALS", url: "https://www.buyma.com/my/sell/132359268/edit?tab=b", date: "5/21" },
-  { name: "WACKO MARIA", url: "https://www.buyma.com/my/sell/140130735/edit?tab=b", date: "10/30" },
-  { name: "NEIGHBORHOOD", url: "https://www.buyma.com/my/sell/137332442/edit?tab=b", date: "9/7" },
+  { name: "WACKO MARIA", url: "https://www.buyma.com/my/sell/140130735/edit?tab=b", date: "10/30", memo: "愛用者：木村拓哉/常田大希(King Gnu)/コムドット/Six Stones\n雑誌タグ：GQ/POPEYE/SENSE/OCEANS" },
+  { name: "NEIGHBORHOOD", url: "https://www.buyma.com/my/sell/137332442/edit?tab=b", date: "9/7", memo: "雑誌タグ：SENSE / Ollie / POPEYE / MENS NON-NO / smart / FINEBOYS / warp / 411 / GQ / LEON / OCEANS / UOMO" },
   { name: "Sacai", url: "https://www.buyma.com/my/sell/111196413/edit?tab=b", date: "10/7" },
   { name: "A.P.C. (2)", url: "https://www.buyma.com/my/sell/111208850/edit?tab=b", date: "10/7" },
   { name: "BoTT", url: "https://www.buyma.com/my/sell/111209736/edit?tab=b", date: "10/7" },
   { name: "Carhartt WIP", url: "", date: "" },
   { name: "Yohji Yamamoto", url: "https://www.buyma.com/my/sell/111209046/edit?tab=b", date: "10/7" },
   { name: "BlackEyePatch", url: "https://www.buyma.com/my/sell/113022689/edit?tab=b", date: "11/25" },
-  { name: "AURALEE", url: "https://www.buyma.com/my/sell/114069201/edit?tab=b", date: "12/27" },
+  { name: "AURALEE", url: "https://www.buyma.com/my/sell/114069201/edit?tab=b", date: "12/27", memo: "雑誌タグ： VOGUE (JAPAN), ELLE, Oggi, CLASSY., BAILA, GINZA, GISELe, SPUR, STORY, VERY, ViVi,Begin, GQ, LEON, OCEANS, POPEYE, Safari, UOMO, MEN'S NON-NO, smart, FINEBOYS" },
   { name: "OUR LEGACY", url: "https://www.buyma.com/my/sell/109400277/edit?tab=b", date: "8/22" },
   { name: "THOM BROWNE", url: "https://www.buyma.com/my/sell/109805790/edit?tab=b", date: "8/22" },
   { name: "Paul Smith", url: "https://www.buyma.com/my/sell/109777273/edit?tab=b", date: "8/22" },
   { name: "SAVE MY BAG", url: "https://www.buyma.com/my/sell/109877513/edit?tab=b", date: "8/22" },
-  { name: "NEEDLES", url: "https://www.buyma.com/my/sell/109877621/edit?tab=b", date: "8/22" },
+  { name: "NEEDLES", url: "https://www.buyma.com/my/sell/109877621/edit?tab=b", date: "8/22", memo: "雑誌タグ：GINZA、GISELe、SPUR,smart,MENS NON-NO,POPEYE,UOMO,Begin、GQ、LEON、OCEANS、FINEBOYS" },
   { name: "ADERERROR", url: "https://www.buyma.com/my/sell/109877747/edit?tab=b", date: "8/22" },
   { name: "Zimmermann", url: "https://www.buyma.com/my/sell/new?copy_id=109831489", date: "8/22" },
   { name: "VETEMENTS", url: "https://www.buyma.com/my/sell/112857778/edit?tab=b", date: "11/21" },
   { name: "Aesther Ekme", url: "https://www.buyma.com/my/sell/113326347/edit?tab=b", date: "12/4" },
   { name: "MIHARA YASUHIRO", url: "https://www.buyma.com/my/sell/137119483/edit?tab=b", date: "4/2" },
-  { name: "UNDERCOVER", url: "https://www.buyma.com/my/sell/137119638/edit?tab=b", date: "" },
+  { name: "UNDERCOVER", url: "https://www.buyma.com/my/sell/137119638/edit?tab=b", date: "", memo: "雑誌タグ：GQ / VOGUE / SPUR / MENS NON-NO / ELLE / POPEYE / smart / Ollie / warp / UOMO / SENSE" },
 ];
 
+/* メモは従来と同じキー・同じ「ブランド名」で保存(既存メモはそのまま残ります) */
 const MEMO_KEY = "buyma_memos";
-
-function loadMemos() {
-  try { return JSON.parse(localStorage.getItem(MEMO_KEY) || "{}"); } catch { return {}; }
-}
-function saveMemo(name, val) {
-  const m = loadMemos();
-  m[name] = val;
-  localStorage.setItem(MEMO_KEY, JSON.stringify(m));
+function loadMemos(){ try { return JSON.parse(localStorage.getItem(MEMO_KEY) || "{}"); } catch { return {}; } }
+function saveMemo(name, val){
+  try { const m = loadMemos(); m[name] = val; localStorage.setItem(MEMO_KEY, JSON.stringify(m)); } catch {}
 }
 
-function getType(url) {
-  if (!url) return "none";
-  if (url.includes("/item/")) return "item";
-  if (url.includes("copy_id")) return "copy";
-  return "edit";
-}
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+/* 愛用者・雑誌タグは、メモが空のときだけ最初からメモ欄に入れる */
+const seedMemo = b => b.memo || "";
 
-function getBadge(type) {
-  return { edit: { label: "編集", cls: "badge-edit" }, copy: { label: "コピー", cls: "badge-copy" }, item: { label: "商品", cls: "badge-item" }, none: { label: "リンクなし", cls: "badge-none" } }[type];
-}
+function grow(el){ el.style.height = "auto"; el.style.height = Math.max(132, el.scrollHeight + 2) + "px"; }
 
-function render() {
-  const q = document.getElementById("search").value.toLowerCase();
+function render(){
+  const q = document.getElementById("search").value.trim().toLowerCase();
   const memos = loadMemos();
-  const filtered = brands.filter(b => b.name.toLowerCase().includes(q));
+  const rows = brands.map((b, i) => ({ b, i })).filter(({ b }) => b.name.toLowerCase().includes(q));
+  document.getElementById("count").textContent = rows.length + " 件";
+  const list = document.getElementById("list");
+  if (!rows.length){ list.innerHTML = '<div class="empty">該当するブランドがありません</div>'; return; }
 
-  document.getElementById("count").textContent = filtered.length + " ブランド";
-
-  const grid = document.getElementById("grid");
-  if (!filtered.length) {
-    grid.innerHTML = '<div class="no-results">該当するブランドが見つかりませんでした</div>';
-    return;
-  }
-
-  grid.innerHTML = filtered.map(b => {
-    const type = getType(b.url);
-    const badge = getBadge(type);
-    const memo = (memos[b.name] || "").replace(/"/g, "&quot;");
-    const inner = `
-      <div class="card-top">
-        <span class="card-name">${b.name}</span>
-        <span class="badge ${badge.cls}">${badge.label}</span>
+  list.innerHTML = rows.map(({ b, i }) => `
+    <section class="row">
+      <div class="info">
+        <div class="name">${esc(b.name)}</div>
+        ${b.date ? `<div class="meta">${esc(b.date)}</div>` : ""}
+        ${b.note ? `<div class="note">${esc(b.note)}</div>` : ""}
+        ${b.url
+          ? `<a class="open" href="${esc(b.url)}" target="_blank" rel="noopener">コピー元ページはココをCLICK</a>`
+          : `<span class="off">リンクなし</span>`}
       </div>
-      ${b.note ? `<div class="card-note">${b.note}</div>` : ""}
-      <div class="card-bottom">
-        <span class="card-date">${b.date || "—"}</span>
+      <div class="memo">
+        <textarea data-i="${i}" placeholder="メモを入力" aria-label="${esc(b.name)} のメモ">${esc(memos[b.name] || seedMemo(b))}</textarea>
+        <span class="saved" id="saved-${i}">保存しました</span>
       </div>
-      <div class="memo-section" onclick="event.stopPropagation(); event.preventDefault();">
-        <textarea class="memo-input" placeholder="メモ..." data-brand="${b.name.replace(/"/g, "&quot;")}" rows="2">${memo}</textarea>
-        <div class="memo-saved-indicator" id="saved-${CSS.escape(b.name)}">保存しました</div>
-      </div>
-    `;
-    if (b.url) {
-      return `<a class="card" href="${b.url}" target="_blank">${inner}</a>`;
-    } else {
-      return `<div class="card no-link">${inner}</div>`;
-    }
-  }).join("");
+    </section>`).join("");
 
-  grid.querySelectorAll(".memo-input").forEach(el => {
+  list.querySelectorAll("textarea").forEach(el => {
+    grow(el);
     el.addEventListener("input", () => {
-      const name = el.dataset.brand;
-      saveMemo(name, el.value);
-      const ind = document.getElementById("saved-" + CSS.escape(name));
-      if (ind) {
-        ind.classList.add("show");
-        clearTimeout(ind._t);
-        ind._t = setTimeout(() => ind.classList.remove("show"), 1500);
-      }
+      grow(el);
+      const i = el.dataset.i;
+      saveMemo(brands[i].name, el.value);
+      const ind = document.getElementById("saved-" + i);
+      ind.classList.add("show");
+      clearTimeout(ind._t);
+      ind._t = setTimeout(() => ind.classList.remove("show"), 1400);
     });
-    el.addEventListener("click", e => e.preventDefault());
-    el.addEventListener("mousedown", e => e.stopPropagation());
   });
 }
 
 document.getElementById("search").addEventListener("input", render);
-
 render();
 </script>
 </body>
